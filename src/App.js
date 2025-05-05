@@ -6,46 +6,78 @@ function App() {
   const [calc, setCalc] = useState('');
   const [result, setResult] = useState('');
 
-  
+  const operators = ['/','*','+','-'];
 
-  return (
-    <div id="container">
-      <div id="calculator">
-        <div id="display">
-          {result ?  <span>(0)</span> : ""} { calc || "0"}
-        </div>
-          <div>
-            <button id="clear">AC</button>
-            <button id="decimal">.</button>
-            <button id="divide">/</button>
-          </div>
-          <div>
-            <button id="seven">7</button>
-            <button id="eight">8</button>
-            <button id="nine">9</button>
-            <button id="multiply">*</button>
-          </div>
-          <div>
-            <button id="four">4</button>
-            <button id="five">5</button>
-            <button id="six">6</button>
-            <button id="add">+</button>
-          </div>
-          <div>
-            <button id="one">1</button>
-            <button id="two">2</button>
-            <button id="three">3</button>
-            <button id="subtract">-</button>
-          </div>
-          <div>
-            <button id="zero">0</button>
-            <button id="equals">=</button>
-          </div>
-        </div>
-      
-      
+  const updateCalc = (value) =>{
+
+    // prevent operator at the start
+if(operators.includes(value) && calc === ""){
+      return;
+}
+
+// prevent two operators in a row
+if(operators.includes(value) && operators.includes(calc.slice(-1))){
+      return;
+}
+
+// prevent multiple decimals in a number
+if(value === "." && calc.split(/[+\-*/]/).pop().includes(".")){
+  return;
+}
+
+    setCalc(prev => prev + value)
+  }
+
+
+
+  // clear result
+const handleClear = () =>{
+  setCalc('');
+    setResult('');
+}
+
+
+return (
+  <div id="container">
+    <div id="calculator">
+      <div id="display">
+        {result ? <span>{result}</span> : ''} {calc || "0"} {/* display result and if calc is empty display "0" */}
+      </div>
+
+      <div>
+        <button id="clear" onClick={handleClear}>AC</button>
+        <button id="decimal" onClick={() => updateCalc('.')}>.</button>
+        <button id="divide" onClick={() => updateCalc('/')}>/</button>
+      </div>
+
+      <div>
+        <button id="seven" onClick={() => updateCalc("7")}>7</button>
+        <button id="eight" onClick={() => updateCalc("8")}>8</button>
+        <button id="nine" onClick={() => updateCalc("9")}>9</button>
+        <button id="multiply" onClick={() => updateCalc('*')}>*</button>
+      </div>
+
+      <div>
+        <button id="four" onClick={() => updateCalc("4")}>4</button>
+        <button id="five" onClick={() => updateCalc("5")}>5</button>
+        <button id="six" onClick={() => updateCalc("6")}>6</button>
+        <button id="add" onClick={() => updateCalc('+')}>+</button>
+      </div>
+
+      <div>
+        <button id="one" onClick={() => updateCalc("1")}>1</button>
+        <button id="two" onClick={() => updateCalc("2")}>2</button>
+        <button id="three" onClick={() => updateCalc("3")}>3</button>
+        <button id="subtract" onClick={() => updateCalc('-')}>-</button>
+      </div>
+
+      <div>
+        <button id="zero" onClick={() => updateCalc("0")}>0</button>
+        <button id="equals">=</button>
+      </div>
     </div>
-  );
+  </div>
+);
 }
 
 export default App;
