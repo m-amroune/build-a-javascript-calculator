@@ -21,6 +21,12 @@ if(operators.includes(value) && operators.includes(calc.slice(-1))){
       return;
 }
 
+// prevent start a number with two zeros in a row
+const lastNumber = calc.split(/[+\-*/]/).pop(); 
+  if (value === '0' && lastNumber === '0') {
+    return;
+  }
+
 // prevent multiple decimals in a number
 if(value === "." && calc.split(/[+\-*/]/).pop().includes(".")){
   return;
@@ -34,7 +40,7 @@ if(value === "." && calc.split(/[+\-*/]/).pop().includes(".")){
     try{
       const evalResult = evaluate(calc);
       setResult(evalResult.toString());
-      // display result
+      // update calc
       setCalc(evalResult.toString())
     } catch(e) {
       setResult("error")
@@ -53,7 +59,7 @@ return (
   <div id="container">
     <div id="calculator">
       <div id="display">
-      {result !== '' ? result : calc || "0"}{/* display result and if calc is empty display "0" */}
+      {result !== '' ? result : calc || "0"}{/* if result is not empty, display "result" else display calc or "0" */}
       </div>
 
       <div>
