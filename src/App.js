@@ -1,6 +1,7 @@
 
 import './App.css';
 import { useState } from 'react';
+import {evaluate} from 'mathjs';
 
 function App() {
   const [calc, setCalc] = useState('');
@@ -28,6 +29,17 @@ if(value === "." && calc.split(/[+\-*/]/).pop().includes(".")){
     setCalc(prev => prev + value)
   }
 
+  // calculate arrow function with the evaluate method 
+  const calculate = () => {
+    try{
+      const evalResult = evaluate(calc);
+      setResult(evalResult.toString());
+      // display result
+      setCalc(evalResult.toString())
+    } catch(e) {
+      setResult("error")
+    }
+  }
 
 
   // clear result
@@ -41,7 +53,7 @@ return (
   <div id="container">
     <div id="calculator">
       <div id="display">
-        {result ? <span>{result}</span> : ''} {calc || "0"} {/* display result and if calc is empty display "0" */}
+      {result !== '' ? result : calc || "0"}{/* display result and if calc is empty display "0" */}
       </div>
 
       <div>
@@ -73,7 +85,7 @@ return (
 
       <div>
         <button id="zero" onClick={() => updateCalc("0")}>0</button>
-        <button id="equals">=</button>
+        <button id="equals" onClick={calculate}  >=</button>
       </div>
     </div>
   </div>
